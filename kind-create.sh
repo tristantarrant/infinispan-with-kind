@@ -1,19 +1,10 @@
 #!/bin/sh
-OS=linux
-ARCH=amd64
-KIND_VERSION=0.9.0
-KUBE_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-PREFIX=/usr/local
-BINDIR=${PREFIX}/bin
-TMPDIR=$(mktemp -d -t kind-XXXXXXXXX)
+OLM_VERSION=0.16.1
+NAMESPACE=infinispan
 
-curl -Lo ${TMPDIR}/kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/${OS}/${ARCH}/kubectl"
-chmod +x ${TMPDIR}/kubectl
+kind create cluster
+kubectl cluster-info --context kind-kind
+olm-install.sh ${OLM_VERSION}
 
-curl -Lo ${TMPDIR}/kind "https://kind.sigs.k8s.io/dl/v${KIND_VERSION}/kind-${OS}-${ARCH}"	
-chmod +x ${TMPDIR}/kind
-
-sudo mv ${TMPDIR}/kind ${TMPDIR}/kubectl ${BINDIR}
-
-rm -rf ${TMPDIR}
+kubectl create namespace ${NAMESPACE}
 
