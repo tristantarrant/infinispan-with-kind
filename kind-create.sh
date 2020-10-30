@@ -4,7 +4,7 @@ NAMESPACE=infinispan
 
 kind create cluster
 kubectl cluster-info --context kind-kind
-olm-install.sh ${OLM_VERSION}
+./olm-install.sh ${OLM_VERSION}
 
 kubectl create namespace ${NAMESPACE}
 
